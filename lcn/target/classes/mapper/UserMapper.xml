@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lcn.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.lcn.entity.User">
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_home_url" property="userHomeUrl" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="deleted" property="deleted" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="base_table_name">
+		user
+	</sql>
+	<sql id="base_column_list">
+		user_id, user_name, user_home_url,
+		create_user, create_time, update_user,
+		update_time, deleted
+	</sql>
+	<sql id="base_condition_list">
+		<where>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="userName != null">
+				AND user_name = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userHomeUrl != null">
+				AND user_home_url = #{userHomeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				AND create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createUser != null">
+				AND create_user = #{createUser,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateUser != null">
+				AND update_user = #{updateUser,jdbcType=VARCHAR}
+			</if>
+			<if test="deleted != null">
+				AND deleted = #{deleted,jdbcType=TINYINT}
+			</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT
+		<include refid="base_column_list" />
+		FROM 
+		<include refid="base_table_name" />
+		WHERE user_id = #{userId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		UPDATE
+		<include refid="base_table_name" />
+		SET deleted = 1
+		WHERE user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+	<delete id="deleteByPrimaryKeyReal" parameterType="java.lang.Long">
+		DELETE FROM 
+		<include refid="base_table_name" />
+		WHERE user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insertSelective" parameterType="com.lcn.entity.User" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO
+		<include refid="base_table_name" />
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="userHomeUrl != null">
+				user_home_url,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userHomeUrl != null">
+				#{userHomeUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateSelective" parameterType="com.lcn.entity.User">
+		UPDATE
+		<include refid="base_table_name" />
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userHomeUrl != null">
+				user_home_url = #{userHomeUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=TINYINT},
+			</if>
+		</set>
+		WHERE user_id = #{userId,jdbcType=BIGINT}
+	</update>
+	<select id="search" resultMap="BaseResultMap" parameterType="com.lcn.entity.User">
+		SELECT
+		<include refid="base_column_list" />
+		FROM
+		<include refid="base_table_name" />
+		<include refid="base_condition_list" />
+	</select>
+</mapper>

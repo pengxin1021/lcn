@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lcn.dao.ResourceDao">
+	<resultMap id="BaseResultMap" type="com.lcn.entity.ShareResource">
+		<result column="resource_id" property="resourceId" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
+		<result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+		<result column="resource_sort" property="resourceSort" jdbcType="TINYINT" />
+		<result column="resource_source" property="resourceSource" jdbcType="VARCHAR" />
+		<result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="deleted" property="deleted" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="base_table_name">
+		resource
+	</sql>
+	<sql id="base_column_list">
+		resource_id, user_id, resource_name, resource_url, resource_sort, resource_source, resource_type, 
+		create_user, create_time, update_user,
+		update_time, deleted
+	</sql>
+	<sql id="base_condition_list">
+		<where>
+			<if test="resourceId != null">
+				resource_id = #{resourceId,jdbcType=BIGINT}
+			</if>
+			<if test="userId != null">
+				AND user_id = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="resourceName != null">
+				AND resource_name = #{resourceName,jdbcType=VARCHAR}
+			</if>
+			<if test="resourceUrl != null">
+				AND resource_url = #{resourceUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="resourceSort != null">
+				AND resource_sort = #{resourceSort,jdbcType=TINYINT}
+			</if>
+			<if test="resourceSource != null">
+				AND resource_source = #{resourceSource,jdbcType=VARCHAR}
+			</if>
+			<if test="resourceType != null">
+				AND resource_type = #{resourceType,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				AND create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createUser != null">
+				AND create_user = #{createUser,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateUser != null">
+				AND update_user = #{updateUser,jdbcType=VARCHAR}
+			</if>
+			<if test="deleted != null">
+				AND deleted = #{deleted,jdbcType=TINYINT}
+			</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT
+		<include refid="base_column_list" />
+		FROM 
+		<include refid="base_table_name" />
+		WHERE resource_id = #{resourceId,jdbcType=BIGINT}
+	</select>
+	<select id="selectNew" resultMap="BaseResultMap" parameterType="com.lcn.entity.ShareResource">
+		SELECT *FROM 
+		<include refid="base_table_name" />
+		<where>
+			<if test="resourceSort != 0">
+				resource_sort = #{resourceSort,jdbcType=TINYINT}
+			</if>
+		</where>
+		 ORDER BY create_time DESC LIMIT 6
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		UPDATE
+		<include refid="base_table_name" />
+		SET deleted = 1
+		WHERE resource_id = #{resourceId,jdbcType=BIGINT}
+	</delete>
+	<delete id="deleteByPrimaryKeyReal" parameterType="java.lang.Long">
+		DELETE FROM 
+		<include refid="base_table_name" />
+		WHERE resource_id = #{resourceId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insertSelective" parameterType="com.lcn.entity.ShareResource" useGeneratedKeys="true" keyProperty="resourceId">
+		INSERT INTO 
+		<include refid="base_table_name"/>
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="resourceId != null">
+				resource_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="resourceName != null">
+				resource_name,
+			</if>
+			<if test="resourceUrl != null">
+				resource_url,
+			</if>
+			<if test="resourceSort != null">
+				resource_sort,
+			</if>
+			<if test="resourceSource != null">
+				resource_source,
+			</if>
+			<if test="resourceType != null">
+				resource_type,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="deleted != null">
+				deleted,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="resourceId != null">
+				#{resourceId,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="resourceName != null">
+				#{resourceName,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceUrl != null">
+				#{resourceUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceSort != null">
+				#{resourceSort,jdbcType=TINYINT},
+			</if>
+			<if test="resourceSource != null">
+				#{resourceSource,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceType != null">
+				#{resourceType,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateSelective" parameterType="com.lcn.entity.ShareResource">
+		UPDATE
+		<include refid="base_table_name" />
+		<set>
+			<if test="resourceId != null">
+				resource_id = #{resourceId,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="resourceName != null">
+				resource_name = #{resourceName,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceUrl != null">
+				resource_url = #{resourceUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceSort != null">
+				resource_sort = #{resourceSort,jdbcType=TINYINT},
+			</if>
+			<if test="resourceSource != null">
+				resource_source = #{resourceSource,jdbcType=VARCHAR},
+			</if>
+			<if test="resourceType != null">
+				resource_type = #{resourceType,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=VARCHAR}
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=TINYINT}
+			</if>
+		</set>
+		WHERE resource_id = #{resourceId,jdbcType=BIGINT}
+	</update>
+	<select id="search" resultMap="BaseResultMap" parameterType="com.lcn.entity.ShareResource">
+		SELECT
+		<include refid="base_column_list" />
+		FROM
+		<include refid="base_table_name" />
+		<include refid="base_condition_list" />
+	</select>
+</mapper>
