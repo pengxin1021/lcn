@@ -1,1 +1,5 @@
 /targer/
+/target/
+*.class
+*.gitignore
+*.classpath
