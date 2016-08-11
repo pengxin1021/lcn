@@ -5,21 +5,28 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.RequestConfig.Builder;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -47,6 +54,42 @@ public class HttpRestUtils {
 			httpGet.setURI(new URI(paramString.toString()));
 		}
 		return fetchURLContent(httpGet, headers, responseCharset, withSSL, cookieStore);
+	}
+	
+	/**
+	 * post方式获取url内容
+	 * @param url 网址
+	 * @param headers httpHead
+	 * @param responseCharset 内容解析编码
+	 * @param params 请求参数
+	 * @return
+	 * @throws Exception
+	 */
+	public static HttpResult fetchPostURLContent(String url, Map<String, String> headers, String requestCharset, String responseCharset, Boolean withSSL, CookieStore cookieStore, NameValuePair... params) throws Exception {
+		HttpPost httpPost = new HttpPost(url);
+		if(params != null && params.length > 0) {
+			List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+			CollectionUtils.addAll(paramList, params);
+			httpPost.setEntity(new UrlEncodedFormEntity(paramList, requestCharset));
+		}
+		return fetchURLContent(httpPost, headers, responseCharset, withSSL, cookieStore);
+	}
+	
+	/**
+	 * post方式获取url内容
+	 * @param url 网址
+	 * @param headers httpHead
+	 * @param responseCharset 内容解析编码
+	 * @param json 请求参数
+	 * @return
+	 * @throws Exception
+	 */
+	public static HttpResult fetchPostURLContent(String url, Map<String, String> headers, String responseCharset, Boolean withSSL, CookieStore cookieStore, String json) throws Exception {
+		HttpPost httpPost = new HttpPost(url);
+		if(json != null) {
+			httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+		}
+		return fetchURLContent(httpPost, headers, responseCharset, withSSL, cookieStore);
 	}
 	
 	private static HttpResult fetchURLContent(HttpRequestBase httpRequestBase, Map<String, String> headers, String responseCharset, Boolean withSSL, CookieStore cookieStore) throws Exception {
